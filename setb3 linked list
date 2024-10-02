@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>  // Included for Turbo C
 #include <stdlib.h>
 
 struct Node {
@@ -7,13 +8,16 @@ struct Node {
 };
 
 void insertAtEnd(struct Node** head, int data) {
-    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* new_node;
+    new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
+
     if (*head == NULL) {
         *head = new_node;
         return;
     }
+
     struct Node* temp = *head;
     while (temp->next != NULL) {
         temp = temp->next;
@@ -23,9 +27,11 @@ void insertAtEnd(struct Node** head, int data) {
 
 void sortList(struct Node* head) {
     struct Node* current = head;
-    struct Node* index = NULL;
+    struct Node* index;
     int temp;
+
     if (head == NULL) return;
+
     while (current != NULL) {
         index = current->next;
         while (index != NULL) {
@@ -52,12 +58,14 @@ void displayList(struct Node* head) {
 int main() {
     struct Node* head = NULL;
     int value, choice;
-    
+
+    clrscr();  // Clear screen (specific to Turbo C)
+
     while (1) {
         printf("\n1. Insert\n2. Sort and Display\n3. Exit\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
-        
+
         if (choice == 1) {
             printf("Enter value to insert: ");
             scanf("%d", &value);
@@ -72,5 +80,7 @@ int main() {
             printf("Invalid choice.\n");
         }
     }
+
+    getch();  // Wait for key press (specific to Turbo C)
     return 0;
 }
