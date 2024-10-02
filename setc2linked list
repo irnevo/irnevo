@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 
 struct Node {
     int data;
@@ -10,12 +11,12 @@ void insertAtEnd(struct Node** head, int data) {
     struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
-    
+
     if (*head == NULL) {
         *head = new_node;
         return;
     }
-    
+
     struct Node* temp = *head;
     while (temp->next != NULL) {
         temp = temp->next;
@@ -36,10 +37,10 @@ int countNodes(struct Node* head) {
 void splitList(struct Node* head, struct Node** list1, struct Node** list2) {
     int totalNodes = countNodes(head);
     int mid = (totalNodes + 1) / 2;  // If odd, the first list gets the extra node
-    
+
     struct Node* temp = head;
     int count = 0;
-    
+
     while (temp != NULL) {
         count++;
         if (count <= mid) {
@@ -90,5 +91,6 @@ int main() {
             printf("Invalid choice.\n");
         }
     }
+    getch();
     return 0;
 }
