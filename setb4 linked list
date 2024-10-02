@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>  // For Turbo C specific functions
 #include <stdlib.h>
 
 struct Node {
@@ -8,21 +9,22 @@ struct Node {
 };
 
 void insertAtEnd(struct Node** head, int data) {
-    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* new_node;
+    new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
     new_node->prev = NULL;
-    
+
     if (*head == NULL) {
         *head = new_node;
         return;
     }
-    
+
     struct Node* temp = *head;
     while (temp->next != NULL) {
         temp = temp->next;
     }
-    
+
     temp->next = new_node;
     new_node->prev = temp;
 }
@@ -57,6 +59,8 @@ int main() {
     struct Node* head = NULL;
     int choice, value;
 
+    clrscr();  // Clears the screen
+
     while (1) {
         printf("\n1. Insert into List\n2. Display Odd Nodes\n3. Display Complete List\n4. Exit\n");
         printf("Enter your choice: ");
@@ -76,5 +80,7 @@ int main() {
             printf("Invalid choice.\n");
         }
     }
+
+    getch();  // Waits for a key press before closing
     return 0;
 }
