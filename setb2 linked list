@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <conio.h>  // Included for Turbo C
 #include <stdlib.h>
 
 struct Node {
@@ -7,13 +8,16 @@ struct Node {
 };
 
 void insertAtEnd(struct Node** head, int data) {
-    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* new_node;
+    new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
+
     if (*head == NULL) {
         *head = new_node;
         return;
     }
+
     struct Node* temp = *head;
     while (temp->next != NULL) {
         temp = temp->next;
@@ -24,6 +28,7 @@ void insertAtEnd(struct Node** head, int data) {
 void searchNumber(struct Node* head, int key) {
     struct Node* temp = head;
     int position = 1;
+    
     while (temp != NULL) {
         if (temp->data == key) {
             printf("Number found at position %d\n", position);
@@ -32,39 +37,59 @@ void searchNumber(struct Node* head, int key) {
         temp = temp->next;
         position++;
     }
+    
     printf("Number not Found\n");
 }
 
 void deleteAtPosition(struct Node** head, int pos) {
     if (*head == NULL) return;
+
     struct Node* temp = *head;
+    
     if (pos == 1) {
         *head = temp->next;
         free(temp);
         return;
     }
-    for (int i = 1; temp != NULL && i < pos - 1; i++) {
+
+    int i;
+    for (i = 1; temp != NULL && i < pos - 1; i++) {
         temp = temp->next;
     }
+
     if (temp == NULL || temp->next == NULL) return;
+
     struct Node* next = temp->next->next;
     free(temp->next);
     temp->next = next;
 }
 
+void displayList(struct Node* head) {
+    struct Node* temp = head;
+    printf("Current List: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
 int main() {
     struct Node* head = NULL;
     int choice, value, pos;
-    
+
+    clrscr();  // Clear screen (specific to Turbo C)
+
     while (1) {
         printf("\n1. Insert\n2. Search\n3. Delete\n4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-        
+
         if (choice == 1) {
             printf("Enter value to insert: ");
             scanf("%d", &value);
             insertAtEnd(&head, value);
+            displayList(head);
         } else if (choice == 2) {
             printf("Enter value to search: ");
             scanf("%d", &value);
@@ -73,11 +98,15 @@ int main() {
             printf("Enter position to delete: ");
             scanf("%d", &pos);
             deleteAtPosition(&head, pos);
+            displayList(head);
         } else if (choice == 4) {
             break;
         } else {
             printf("Invalid choice.\n");
         }
     }
+
+    getch();  // Wait for key press (specific to Turbo C)
     return 0;
 }
+
