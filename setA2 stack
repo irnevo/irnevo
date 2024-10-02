@@ -1,15 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Define a structure for a stack node
 struct Node {
     int data;
     struct Node* next;
 };
-
-// Initialize the stack (No need for an explicit function since we will just use NULL)
-void initialize(struct Node** top) {
-    *top = NULL;
-}
 
 // Push an element onto the stack
 void push(struct Node** top, int value) {
@@ -57,6 +53,13 @@ void display(struct Node* top) {
     printf("NULL\n");
 }
 
+// Clean up the stack and free all nodes
+void cleanup(struct Node** top) {
+    while (*top != NULL) {
+        pop(top);
+    }
+}
+
 int main() {
     struct Node* stack = NULL;
     int choice, value;
@@ -84,6 +87,7 @@ int main() {
         } else if (choice == 4) {
             display(stack);
         } else if (choice == 5) {
+            cleanup(&stack);
             break;
         } else {
             printf("Invalid choice.\n");
