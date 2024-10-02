@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+    new_node->prev = NULL;
+    
+    if (*head == NULL) {
+        *head = new_node;
+        return;
+    }
+    
+    struct Node* temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    
+    temp->next = new_node;
+    new_node->prev = temp;
+}
+
+void displayOddNodes(struct Node* head) {
+    struct Node* temp = head;
+    printf("Nodes with odd values: ");
+    
+    while (temp != NULL) {
+        if (temp->data % 2 != 0) {
+            printf("%d -> ", temp->data);
+        }
+        temp = temp->next;
+    }
+    
+    printf("NULL\n");
+}
+
+void displayList(struct Node* head) {
+    struct Node* temp = head;
+    printf("Complete List: ");
+    
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    int choice, value;
+
+    while (1) {
+        printf("\n1. Insert into List\n2. Display Odd Nodes\n3. Display Complete List\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("Enter value to insert: ");
+            scanf("%d", &value);
+            insertAtEnd(&head, value);
+        } else if (choice == 2) {
+            displayOddNodes(head);
+        } else if (choice == 3) {
+            displayList(head);
+        } else if (choice == 4) {
+            break;
+        } else {
+            printf("Invalid choice.\n");
+        }
+    }
+    return 0;
+}
