@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+    
+    if (*head == NULL) {
+        *head = new_node;
+        return;
+    }
+    
+    struct Node* temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = new_node;
+}
+
+int countNodes(struct Node* head) {
+    int count = 0;
+    struct Node* temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+void splitList(struct Node* head, struct Node** list1, struct Node** list2) {
+    int totalNodes = countNodes(head);
+    int mid = (totalNodes + 1) / 2;  // If odd, the first list gets the extra node
+    
+    struct Node* temp = head;
+    int count = 0;
+    
+    while (temp != NULL) {
+        count++;
+        if (count <= mid) {
+            insertAtEnd(list1, temp->data);
+        } else {
+            insertAtEnd(list2, temp->data);
+        }
+        temp = temp->next;
+    }
+}
+
+void displayList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    struct Node* list1 = NULL;
+    struct Node* list2 = NULL;
+    int choice, value;
+
+    while (1) {
+        printf("\n1. Insert into List\n2. Split List into Two\n3. Display List 1\n4. Display List 2\n5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("Enter value to insert: ");
+            scanf("%d", &value);
+            insertAtEnd(&head, value);
+        } else if (choice == 2) {
+            splitList(head, &list1, &list2);
+            printf("List has been split.\n");
+        } else if (choice == 3) {
+            printf("List 1: ");
+            displayList(list1);
+        } else if (choice == 4) {
+            printf("List 2: ");
+            displayList(list2);
+        } else if (choice == 5) {
+            break;
+        } else {
+            printf("Invalid choice.\n");
+        }
+    }
+    return 0;
+}
