@@ -1,5 +1,6 @@
+
 #include <stdio.h>
-#include <stdlib.h>
+#include <conio.h>
 
 struct Node {
     int data;
@@ -17,7 +18,8 @@ int countNodes(struct Node* head) {
 }
 
 void insertAtStart(struct Node** head, int data) {
-    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* new_node;
+    new_node = (struct Node*)malloc(sizeof(struct Node));  // Turbo C may not support newer C standards, so malloc is still fine.
     new_node->data = data;
     new_node->next = *head;
     *head = new_node;
@@ -27,6 +29,7 @@ struct Node* reverseList(struct Node* head) {
     struct Node* prev = NULL;
     struct Node* current = head;
     struct Node* next = NULL;
+    
     while (current != NULL) {
         next = current->next;
         current->next = prev;
@@ -49,6 +52,8 @@ int main() {
     struct Node* head = NULL;
     int choice, value;
     
+    clrscr();  // Clears the console screen, specific to Turbo C.
+    
     while (1) {
         printf("\n1. Insert at Start\n2. Reverse and Display\n3. Count Nodes\n4. Exit\n");
         printf("Enter choice: ");
@@ -61,9 +66,9 @@ int main() {
         } else if (choice == 2) {
             printf("Original List:\n");
             displayList(head);
-            struct Node* reversedHead = reverseList(head);
+            head = reverseList(head);  // Updated to reverse the list and reflect changes in the same list.
             printf("Reversed List:\n");
-            displayList(reversedHead);
+            displayList(head);
         } else if (choice == 3) {
             printf("Total Nodes: %d\n", countNodes(head));
         } else if (choice == 4) {
@@ -72,5 +77,7 @@ int main() {
             printf("Invalid choice.\n");
         }
     }
+    
+    getch();  // Specific to Turbo C to hold the screen before exiting.
     return 0;
 }
