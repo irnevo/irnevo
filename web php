@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Age Authorization</title>
+</head>
+<body>
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name = htmlspecialchars($_POST['name']);
+        $age = intval($_POST['age']);
+
+        if ($age < 18) {
+            echo "Hello " . $name . ", you are not authorized to visit the site.";
+        } else {
+            echo "Welcome " . $name . " to this site.";
+        }
+    } else {
+    ?>
+    <h1>Enter your name and age</h1>
+    <form method="POST" action="">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <?php
+    }
+    ?>
+</body>
+</html>
