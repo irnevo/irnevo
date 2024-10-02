@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Push onto the stack
+void push(struct Node** top, int value) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    if (new_node == NULL) {
+        printf("Stack overflow\n");
+        return;
+    }
+    new_node->data = value;
+    new_node->next = *top;
+    *top = new_node;
+}
+
+// Pop from the stack
+int pop(struct Node** top) {
+    if (*top == NULL) {
+        printf("Stack underflow\n");
+        exit(1);
+    }
+    struct Node* temp = *top;
+    int popped_value = temp->data;
+    *top = (*top)->next;
+    free(temp);
+    return popped_value;
+}
+
+// Evaluate a postfix expression
+int evaluatePostfix(char* exp) {
+    struct Node* stack = NULL;
+    int i = 0;
+    
+    while (exp[i] != '\0') {
+        // If character is a digit
+        if (exp[i] >= '0' && exp[i] <= '9') {
+            push(&stack, exp[i] - '0');  // Convert char to int and push onto the stack
+        }
+        // If character is an operator
+        else {
+            int val1 = pop(&stack);
+            int val2 = pop(&stack);
+            
+            switch (exp[i]) {
+                case '+':
+                    push(&stack, val2 + val1);
+                    break;
+                case '-':
+                    push(&stack, val2 - val1);
+                    break;
+                case '*':
+                    push(&stack, val2 * val1);
+                    break;
+                case '/':
+                    if (val1 != 0) {
+                        push(&stack, val2 / val1);
+                    } else {
+                        printf("Division by zero error.\n");
+                        exit(1);
+                    }
+                    break;
+            }
+        }
+        i++;
+    }
+    return pop(&stack);
+}
+
+int main() {
+    char exp[100];
+    printf("Enter a postfix expression: ");
+    scanf("%s", exp);
+    int result = evaluatePostfix(exp);
+    printf("The result of the postfix expression is: %d\n", result);
+    return 0;
+}
