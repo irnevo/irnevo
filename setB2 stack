@@ -6,7 +6,6 @@ struct Node {
     struct Node* next;
 };
 
-// Push onto the stack
 void push(struct Node** top, int value) {
     struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
     if (new_node == NULL) {
@@ -18,7 +17,6 @@ void push(struct Node** top, int value) {
     *top = new_node;
 }
 
-// Pop from the stack
 int pop(struct Node** top) {
     if (*top == NULL) {
         printf("Stack underflow\n");
@@ -31,21 +29,16 @@ int pop(struct Node** top) {
     return popped_value;
 }
 
-// Evaluate a postfix expression
 int evaluatePostfix(char* exp) {
     struct Node* stack = NULL;
     int i = 0;
     
     while (exp[i] != '\0') {
-        // If character is a digit
         if (exp[i] >= '0' && exp[i] <= '9') {
-            push(&stack, exp[i] - '0');  // Convert char to int and push onto the stack
-        }
-        // If character is an operator
-        else {
+            push(&stack, exp[i] - '0');
+        } else {
             int val1 = pop(&stack);
             int val2 = pop(&stack);
-            
             switch (exp[i]) {
                 case '+':
                     push(&stack, val2 + val1);
@@ -79,3 +72,4 @@ int main() {
     printf("The result of the postfix expression is: %d\n", result);
     return 0;
 }
+
