@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void push(struct Node** top, int value) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    if (new_node == NULL) {
+        printf("Stack overflow\n");
+        return;
+    }
+    new_node->data = value;
+    new_node->next = *top;
+    *top = new_node;
+}
+
+int pop(struct Node** top) {
+    if (*top == NULL) {
+        printf("Stack underflow\n");
+        exit(1);
+    }
+    struct Node* temp = *top;
+    int popped_value = temp->data;
+    *top = (*top)->next;
+    free(temp);
+    return popped_value;
+}
+
+int isEmpty(struct Node* top) {
+    return top == NULL;
+}
+
+int areIdentical(struct Node* stack1, struct Node* stack2) {
+    while (!isEmpty(stack1) && !isEmpty(stack2)) {
+        if (stack1->data != stack2->data) {
+            return 0;
+        }
+        stack1 = stack1->next;
+        stack2 = stack2->next;
+    }
+    return isEmpty(stack1) && isEmpty(stack2);
+}
+
+int main() {
+    struct Node* stack1 = NULL;
+    struct Node* stack2 = NULL;
+    int n, value;
+
+    printf("Enter the number of elements for stack 1: ");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        printf("Enter element %d for stack 1: ", i+1);
+        scanf("%d", &value);
+        push(&stack1, value);
+    }
+
+    printf("Enter the number of elements for stack 2: ");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        printf("Enter element %d for stack 2: ", i+1);
+        scanf("%d", &value);
+        push(&stack2, value);
+    }
+
+    if (areIdentical(stack1, stack2)) {
+        printf("The stacks are identical.\n");
+    } else {
+        printf("The stacks are not identical.\n");
+    }
+
+    return 0;
+}
