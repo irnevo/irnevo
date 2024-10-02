@@ -7,6 +7,7 @@ struct Node {
     struct Node* next;
 };
 
+// Push an element onto the stack
 void push(struct Node** top, char value) {
     struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
     if (new_node == NULL) {
@@ -18,6 +19,7 @@ void push(struct Node** top, char value) {
     *top = new_node;
 }
 
+// Pop an element from the stack
 char pop(struct Node** top) {
     if (*top == NULL) {
         printf("Stack underflow\n");
@@ -30,16 +32,19 @@ char pop(struct Node** top) {
     return popped_value;
 }
 
+// Peek at the top element of the stack
 char peek(struct Node* top) {
     if (top != NULL)
         return top->data;
-    return '\0';
+    return '\0'; // Return null character if stack is empty
 }
 
+// Check if character is an operator
 int isOperator(char ch) {
     return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
 }
 
+// Return precedence of the operator
 int precedence(char ch) {
     if (ch == '+' || ch == '-')
         return 1;
@@ -48,21 +53,34 @@ int precedence(char ch) {
     return 0;
 }
 
+// Convert infix expression to postfix
 void infixToPostfix(char* infix, char* postfix) {
     struct Node* stack = NULL;
     int i = 0, k = 0;
-    
+
     while (infix[i] != '\0') {
-        if ((infix[i] >= '0' && infix[i] <= '9') || (infix[i] >= 'a' && infix[i] <= 'z') || (infix[i] >= 'A' && infix[i] <= 'Z')) {
+        // Handle operands (numbers and letters)
+        if ((infix[i] >= '0' && infix[i] <= '9') || 
+            (infix[i] >= 'a' && infix[i] <= 'z') || 
+            (infix[i] >= 'A' && infix[i] <= 'Z')) {
             postfix[k++] = infix[i];
-        } else if (infix[i] == '(') {
+        }
+        // Handle opening parentheses
+        else if (infix[i] == '(') {
             push(&stack, infix[i]);
-        } else if (infix[i] == ')') {
+        }
+        // Handle closing parentheses
+        else if (infix[i] == ')') {
             while (stack != NULL && peek(stack) != '(') {
                 postfix[k++] = pop(&stack);
             }
-            pop(&stack);
-        } else if (isOperator(infix[i])) {
+            // Pop the '(' from the stack
+            if (stack != NULL) {
+                pop(&stack);
+            }
+        }
+        // Handle operators
+        else if (isOperator(infix[i])) {
             while (stack != NULL && precedence(peek(stack)) >= precedence(infix[i])) {
                 postfix[k++] = pop(&stack);
             }
@@ -70,22 +88,24 @@ void infixToPostfix(char* infix, char* postfix) {
         }
         i++;
     }
-    
+
+    // Pop all remaining operators in the stack
     while (stack != NULL) {
         postfix[k++] = pop(&stack);
     }
-    
-    postfix[k] = '\0';
+
+    postfix[k] = '\0'; // Null-terminate the postfix expression
 }
 
 int main() {
     char infix[100], postfix[100];
     printf("Enter an infix expression: ");
-    scanf("%s", infix);
-    
+    scanf("%s", infix); // You can add space handling if needed
+
     infixToPostfix(infix, postfix);
     
     printf("The equivalent postfix expression is: %s\n", postfix);
     
     return 0;
 }
+
