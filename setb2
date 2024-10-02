@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+    if (*head == NULL) {
+        *head = new_node;
+        return;
+    }
+    struct Node* temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = new_node;
+}
+
+void searchNumber(struct Node* head, int key) {
+    struct Node* temp = head;
+    int position = 1;
+    while (temp != NULL) {
+        if (temp->data == key) {
+            printf("Number found at position %d\n", position);
+            return;
+        }
+        temp = temp->next;
+        position++;
+    }
+    printf("Number not Found\n");
+}
+
+void deleteAtPosition(struct Node** head, int pos) {
+    if (*head == NULL) return;
+    struct Node* temp = *head;
+    if (pos == 1) {
+        *head = temp->next;
+        free(temp);
+        return;
+    }
+    for (int i = 1; temp != NULL && i < pos - 1; i++) {
+        temp = temp->next;
+    }
+    if (temp == NULL || temp->next == NULL) return;
+    struct Node* next = temp->next->next;
+    free(temp->next);
+    temp->next = next;
+}
+
+int main() {
+    struct Node* head = NULL;
+    int choice, value, pos;
+    
+    while (1) {
+        printf("\n1. Insert\n2. Search\n3. Delete\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        if (choice == 1) {
+            printf("Enter value to insert: ");
+            scanf("%d", &value);
+            insertAtEnd(&head, value);
+        } else if (choice == 2) {
+            printf("Enter value to search: ");
+            scanf("%d", &value);
+            searchNumber(head, value);
+        } else if (choice == 3) {
+            printf("Enter position to delete: ");
+            scanf("%d", &pos);
+            deleteAtPosition(&head, pos);
+        } else if (choice == 4) {
+            break;
+        } else {
+            printf("Invalid choice.\n");
+        }
+    }
+    return 0;
+}
