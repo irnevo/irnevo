@@ -7,6 +7,7 @@ struct Node {
     struct Node* next;
 };
 
+// Function to insert an element at the end of the list
 void insertAtEnd(struct Node** head, int data) {
     struct Node* new_node;
     struct Node* temp;
@@ -27,6 +28,7 @@ void insertAtEnd(struct Node** head, int data) {
     temp->next = new_node;
 }
 
+// Function to search for a number in the list
 void searchNumber(struct Node* head, int key) {
     struct Node* temp;
     int position;
@@ -42,10 +44,48 @@ void searchNumber(struct Node* head, int key) {
         temp = temp->next;
         position++;
     }
-
     printf("Number not Found\n");
 }
 
+// Function to swap the m-th and n-th nodes
+void swapNodes(struct Node** head, int m, int n) {
+    struct Node *prevM, *prevN, *nodeM, *nodeN, *temp;
+    int i;
+
+    if (m == n) return;
+
+    prevM = NULL;
+    prevN = NULL;
+    nodeM = *head;
+    nodeN = *head;
+
+    for (i = 1; nodeM != NULL && i < m; i++) {
+        prevM = nodeM;
+        nodeM = nodeM->next;
+    }
+
+    for (i = 1; nodeN != NULL && i < n; i++) {
+        prevN = nodeN;
+        nodeN = nodeN->next;
+    }
+
+    if (nodeM == NULL || nodeN == NULL) {
+        printf("Invalid positions for swapping\n");
+        return;
+    }
+
+    if (prevM != NULL) prevM->next = nodeN;
+    else *head = nodeN;
+
+    if (prevN != NULL) prevN->next = nodeM;
+    else *head = nodeM;
+
+    temp = nodeN->next;
+    nodeN->next = nodeM->next;
+    nodeM->next = temp;
+}
+
+// Function to delete a node at a specific position
 void deleteAtPosition(struct Node** head, int pos) {
     struct Node* temp;
     struct Node* next;
@@ -72,11 +112,11 @@ void deleteAtPosition(struct Node** head, int pos) {
     temp->next = next;
 }
 
+// Function to display the list
 void displayList(struct Node* head) {
     struct Node* temp;
     temp = head;
-
-    printf("Current List: ");
+    
     while (temp != NULL) {
         printf("%d -> ", temp->data);
         temp = temp->next;
@@ -86,14 +126,19 @@ void displayList(struct Node* head) {
 
 int main() {
     struct Node* head;
-    int choice, value, pos;
+    int choice, value, m, n, pos;
 
     head = NULL;
-
-    clrscr();
+    clrscr();  // Clear screen for Turbo C
 
     while (1) {
-        printf("\n1. Insert\n2. Search\n3. Delete\n4. Exit\n");
+        printf("\nMenu:\n");
+        printf("1. Insert\n");
+        printf("2. Search\n");
+        printf("3. Swap m-th and n-th nodes\n");
+        printf("4. Delete node at specific position\n");
+        printf("5. Display List\n");
+        printf("6. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -101,24 +146,28 @@ int main() {
             printf("Enter value to insert: ");
             scanf("%d", &value);
             insertAtEnd(&head, value);
-            displayList(head);
         } else if (choice == 2) {
-            printf("Enter value to search: ");
+            printf("Enter number to search: ");
             scanf("%d", &value);
             searchNumber(head, value);
         } else if (choice == 3) {
+            printf("Enter positions m and n to swap: ");
+            scanf("%d %d", &m, &n);
+            swapNodes(&head, m, n);
+        } else if (choice == 4) {
             printf("Enter position to delete: ");
             scanf("%d", &pos);
             deleteAtPosition(&head, pos);
+        } else if (choice == 5) {
             displayList(head);
-        } else if (choice == 4) {
+        } else if (choice == 6) {
             break;
         } else {
             printf("Invalid choice.\n");
         }
     }
 
-    getch();
+    getch();  // Wait for key press in Turbo C
     return 0;
 }
 
