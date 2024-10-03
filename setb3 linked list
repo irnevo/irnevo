@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <conio.h>  // Included for Turbo C
+#include <conio.h>
 #include <stdlib.h>
 
 struct Node {
@@ -7,8 +7,11 @@ struct Node {
     struct Node* next;
 };
 
+// Function to insert a node at the end of the list
 void insertAtEnd(struct Node** head, int data) {
     struct Node* new_node;
+    struct Node* temp;
+
     new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
@@ -18,20 +21,24 @@ void insertAtEnd(struct Node** head, int data) {
         return;
     }
 
-    struct Node* temp = *head;
+    temp = *head;
     while (temp->next != NULL) {
         temp = temp->next;
     }
     temp->next = new_node;
 }
 
+// Function to sort the linked list in ascending order
 void sortList(struct Node* head) {
-    struct Node* current = head;
+    struct Node* current;
     struct Node* index;
     int temp;
 
-    if (head == NULL) return;
+    if (head == NULL) {
+        return;
+    }
 
+    current = head;
     while (current != NULL) {
         index = current->next;
         while (index != NULL) {
@@ -46,8 +53,12 @@ void sortList(struct Node* head) {
     }
 }
 
+// Function to display the elements of the list
 void displayList(struct Node* head) {
-    struct Node* temp = head;
+    struct Node* temp;
+    
+    temp = head;
+    printf("Sorted List: ");
     while (temp != NULL) {
         printf("%d -> ", temp->data);
         temp = temp->next;
@@ -56,31 +67,26 @@ void displayList(struct Node* head) {
 }
 
 int main() {
-    struct Node* head = NULL;
-    int value, choice;
+    struct Node* head;
+    int n, value, i;
 
-    clrscr();  // Clear screen (specific to Turbo C)
+    head = NULL;
+    clrscr();  // Clear screen for Turbo C
 
-    while (1) {
-        printf("\n1. Insert\n2. Sort and Display\n3. Exit\n");
-        printf("Enter choice: ");
-        scanf("%d", &choice);
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
 
-        if (choice == 1) {
-            printf("Enter value to insert: ");
-            scanf("%d", &value);
-            insertAtEnd(&head, value);
-        } else if (choice == 2) {
-            sortList(head);
-            printf("Sorted List:\n");
-            displayList(head);
-        } else if (choice == 3) {
-            break;
-        } else {
-            printf("Invalid choice.\n");
-        }
+    for (i = 0; i < n; i++) {
+        printf("Enter element %d: ", i + 1);
+        scanf("%d", &value);
+        insertAtEnd(&head, value);
     }
 
-    getch();  // Wait for key press (specific to Turbo C)
+    sortList(head);
+
+    printf("\n");
+    displayList(head);
+
+    getch();  // Wait for key press in Turbo C
     return 0;
 }
