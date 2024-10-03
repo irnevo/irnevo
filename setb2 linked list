@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <conio.h>  // Included for Turbo C
+#include <conio.h>
 #include <stdlib.h>
 
 struct Node {
@@ -9,6 +9,8 @@ struct Node {
 
 void insertAtEnd(struct Node** head, int data) {
     struct Node* new_node;
+    struct Node* temp;
+
     new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = data;
     new_node->next = NULL;
@@ -18,7 +20,7 @@ void insertAtEnd(struct Node** head, int data) {
         return;
     }
 
-    struct Node* temp = *head;
+    temp = *head;
     while (temp->next != NULL) {
         temp = temp->next;
     }
@@ -26,9 +28,12 @@ void insertAtEnd(struct Node** head, int data) {
 }
 
 void searchNumber(struct Node* head, int key) {
-    struct Node* temp = head;
-    int position = 1;
-    
+    struct Node* temp;
+    int position;
+
+    temp = head;
+    position = 1;
+
     while (temp != NULL) {
         if (temp->data == key) {
             printf("Number found at position %d\n", position);
@@ -37,35 +42,40 @@ void searchNumber(struct Node* head, int key) {
         temp = temp->next;
         position++;
     }
-    
+
     printf("Number not Found\n");
 }
 
 void deleteAtPosition(struct Node** head, int pos) {
+    struct Node* temp;
+    struct Node* next;
+    int i;
+
     if (*head == NULL) return;
 
-    struct Node* temp = *head;
-    
+    temp = *head;
+
     if (pos == 1) {
         *head = temp->next;
         free(temp);
         return;
     }
 
-    int i;
     for (i = 1; temp != NULL && i < pos - 1; i++) {
         temp = temp->next;
     }
 
     if (temp == NULL || temp->next == NULL) return;
 
-    struct Node* next = temp->next->next;
+    next = temp->next->next;
     free(temp->next);
     temp->next = next;
 }
 
 void displayList(struct Node* head) {
-    struct Node* temp = head;
+    struct Node* temp;
+    temp = head;
+
     printf("Current List: ");
     while (temp != NULL) {
         printf("%d -> ", temp->data);
@@ -75,10 +85,12 @@ void displayList(struct Node* head) {
 }
 
 int main() {
-    struct Node* head = NULL;
+    struct Node* head;
     int choice, value, pos;
 
-    clrscr();  // Clear screen (specific to Turbo C)
+    head = NULL;
+
+    clrscr();
 
     while (1) {
         printf("\n1. Insert\n2. Search\n3. Delete\n4. Exit\n");
@@ -106,7 +118,7 @@ int main() {
         }
     }
 
-    getch();  // Wait for key press (specific to Turbo C)
+    getch();
     return 0;
 }
 
