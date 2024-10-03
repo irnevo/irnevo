@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <conio.h>  // For Turbo C specific functions
+#include <conio.h>
 #include <stdlib.h>
 
 struct Node {
@@ -8,19 +8,25 @@ struct Node {
     struct Node* next;
 };
 
-void insertAtEnd(struct Node** head, int data) {
-    struct Node* new_node;
-    new_node = (struct Node*)malloc(sizeof(struct Node));
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
     new_node->data = data;
-    new_node->next = NULL;
     new_node->prev = NULL;
+    new_node->next = NULL;
+    return new_node;
+}
+
+// Function to insert a node at the end of the doubly linked list
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* new_node = createNode(data);
+    struct Node* temp = *head;
 
     if (*head == NULL) {
         *head = new_node;
         return;
     }
 
-    struct Node* temp = *head;
     while (temp->next != NULL) {
         temp = temp->next;
     }
@@ -29,6 +35,7 @@ void insertAtEnd(struct Node** head, int data) {
     new_node->prev = temp;
 }
 
+// Function to display nodes with odd values
 void displayOddNodes(struct Node* head) {
     struct Node* temp = head;
     printf("Nodes with odd values: ");
@@ -39,10 +46,10 @@ void displayOddNodes(struct Node* head) {
         }
         temp = temp->next;
     }
-    
     printf("NULL\n");
 }
 
+// Function to display the complete list (for debugging purposes)
 void displayList(struct Node* head) {
     struct Node* temp = head;
     printf("Complete List: ");
@@ -51,36 +58,27 @@ void displayList(struct Node* head) {
         printf("%d -> ", temp->data);
         temp = temp->next;
     }
-    
     printf("NULL\n");
 }
 
 int main() {
     struct Node* head = NULL;
-    int choice, value;
+    int n, value, i;
 
-    clrscr();  // Clears the screen
+    clrscr();  // Clear the screen for Turbo C
 
-    while (1) {
-        printf("\n1. Insert into List\n2. Display Odd Nodes\n3. Display Complete List\n4. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
 
-        if (choice == 1) {
-            printf("Enter value to insert: ");
-            scanf("%d", &value);
-            insertAtEnd(&head, value);
-        } else if (choice == 2) {
-            displayOddNodes(head);
-        } else if (choice == 3) {
-            displayList(head);
-        } else if (choice == 4) {
-            break;
-        } else {
-            printf("Invalid choice.\n");
-        }
+    for (i = 0; i < n; i++) {
+        printf("Enter element %d: ", i + 1);
+        scanf("%d", &value);
+        insertAtEnd(&head, value);
     }
 
-    getch();  // Waits for a key press before closing
+    displayList(head);         // Display the entire list
+    displayOddNodes(head);     // Display only the nodes with odd values
+
+    getch();  // Wait for key press in Turbo C
     return 0;
 }
