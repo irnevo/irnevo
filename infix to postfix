@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+
+typedef struct node {
+    int data;
+    struct node* next;
+} Node;
+
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        printf("Memory error\n");
+        return NULL;
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+
+int isEmpty(Node* top) {
+    return top == NULL;
+}
+
+
+void push(Node** top, int data) {
+    Node* newNode = createNode(data);
+    if (*top)
+        newNode->next = *top;
+    *top = newNode;
+}
+
+
+int pop(Node** top) {
+    Node* temp;
+    int data;
+    if (isEmpty(*top)) {
+        printf("Stack is empty\n");
+        return -1;
+    }
+    temp = *top;
+    data = temp->data;
+    *top = (*top)->next;
+    free(temp);
+    return data;
+}
+
+
+int evaluatePostfix(char* expression) {
+    Node* top = NULL;
+    int i, operand1, operand2, result;
+    for (i = 0; expression[i]; i++) {
+        if (isdigit(expression[i]))
+            push(&top, expression[i] - '0');
+        else if (expression[i] == ' ') {
+            continue;
+        } else {
+            operand2 = pop(&top);
+            operand1 = pop(&top);
+            switch (expression[i]) {
+                case '+':
+                    result = operand1 + operand2;
+                    break;
+                case '-':
+                    result = operand1 - operand2;
+                    break;
+                case '*':
+                    result = operand1 * operand2;
+                    break;
+                case '/':
+                    if (operand2 == 0) {
+                        printf("Error: Division by zero\n");
+                        return -1;
+                    }
+                    result = operand1 / operand2;
+                    break;
+                default:
+                    printf("Invalid operator\n");
+                    return -1;
+            }
+            push(&top, result);
+        }
+    }
+    result = pop(&top);
+    return result;
+}
+
+
+int main() {
+    char expression[100];
+    int result;
+    printf("Enter a postfix expression: ");
+    gets(expression);
+    result = evaluatePostfix(expression);
+    if (result != -1)
+        printf("Result: %d\n", result);
+    return 0;
+}
