@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <conio.h>
+
+// Define the structure for a stack node
+struct node {
+    int data;
+    struct node* link;
+} *f, *r;
+
+// Function to initialize the stack
+void initialize() {
+    f = r = NULL;
+}
+
+// Function to add an element to the stack
+void add() {
+    struct node* temp;
+    temp = (struct node*)malloc(sizeof(struct node));
+    printf("Enter a value: ");
+    scanf("%d", &temp->data);
+    temp->link = NULL;
+    if (f == NULL)
+        f = r = temp;
+    else {
+        temp->link = f;
+        f = temp;
+    }
+    printf("Element added successfully\n");
+}
+
+// Function to delete an element from the stack
+int del() {
+    int value;
+    struct node* temp;
+    if (f == NULL) {
+        printf("Stack is empty\n");
+        return -1;
+    }
+    value = f->data;
+    temp = f;
+    f = f->link;
+    free(temp);
+    return value;
+}
+
+// Function to display the stack elements
+void display() {
+    struct node* temp;
+    temp = f;
+    if (f == NULL)
+        printf("Stack is empty\n");
+    else {
+        printf("Stack elements: ");
+        while (temp != NULL) {
+            printf("%d ", temp->data);
+            temp = temp->link;
+        }
+        printf("\n");
+    }
+}
+
+// Main function
+void main() {
+    int ch;
+    clrscr();
+    initialize();
+    while (1) {
+        printf("1. Push element\n");
+        printf("2. Pop element\n");
+        printf("3. Display stack\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1:
+                add();
+                break;
+            case 2:
+                printf("Popped element: %d\n", del());
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                exit(0);
+                break;
+            default:
+                printf("Invalid choice\n");
+                break;
+        }
+        printf("\n");
+    }
+}
