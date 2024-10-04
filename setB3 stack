@@ -3,13 +3,13 @@
 #include <ctype.h>
 #include <string.h>
 
-// Define the structure for a stack node
+
 typedef struct node {
     char data;
     struct node* next;
 } Node;
 
-// Function to create a new stack node
+
 Node* createNode(char data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     if (!newNode) {
@@ -21,12 +21,12 @@ Node* createNode(char data) {
     return newNode;
 }
 
-// Function to check if the stack is empty
+
 int isEmpty(Node* top) {
     return top == NULL;
 }
 
-// Function to push an element onto the stack
+
 void push(Node** top, char data) {
     Node* newNode = createNode(data);
     if (*top)
@@ -34,7 +34,7 @@ void push(Node** top, char data) {
     *top = newNode;
 }
 
-// Function to pop an element from the stack
+
 char pop(Node** top) {
     Node* temp;
     char data;
@@ -49,7 +49,7 @@ char pop(Node** top) {
     return data;
 }
 
-// Function to get the precedence of an operator
+
 int getPrecedence(char operator) {
     switch (operator) {
         case '+':
@@ -63,7 +63,7 @@ int getPrecedence(char operator) {
     }
 }
 
-// Function to convert an infix expression to postfix
+
 void infixToPostfix(char* infix, char* postfix) {
     Node* top = NULL;
     int i, j = 0;
@@ -92,7 +92,6 @@ void infixToPostfix(char* infix, char* postfix) {
     postfix[j] = '\0';
 }
 
-// Main function
 int main() {
     char infix[100], postfix[100];
     printf("Enter an infix expression: ");
