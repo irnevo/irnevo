@@ -1,0 +1,185 @@
+typedef struct BSTnode 
+
+{ 
+
+ int data; 
+
+ struct BSTnode *left,*right; 
+
+}BSTnode; 
+
+void inorder(BSTnode *T) 
+
+{ 
+
+ if(T!=NULL) 
+
+ { 
+
+ inorder(T->left); 
+
+ printf("%d\t",T->data); 
+
+ inorder(T->right); 
+
+ } 
+
+} 
+
+void preorder(BSTnode *T) 
+
+ { if(T!=NULL) 
+
+ { printf("%d\t",T->data); 
+
+ preorder(T->left); 
+
+ preorder(T->right); 
+
+ } 
+
+ } 
+
+void postorder(BSTnode *T) 
+
+ { if(T!=NULL) 
+
+ { 
+
+ postorder(T->left); 
+
+ postorder(T->right); 
+
+ printf("%d\t",T->data); 
+
+ } 
+
+ } 
+
+BSTnode *find(BSTnode *root,int x) 
+
+{ 
+
+ while(root!=NULL) 
+
+ { 
+
+ if(x==root->data) 
+
+ return(root); 
+
+ if(x>root->data) 
+
+ root=root->right; 
+
+ else 
+
+ root=root->left; 
+
+ } 
+
+ return(NULL);
+} 
+
+BSTnode *insert(BSTnode *T,int x) 
+
+{ 
+
+ BSTnode *r; 
+
+ // acquire memory for the new node 
+
+ if(T==NULL) 
+
+ { 
+
+ r=(BSTnode*)malloc(sizeof(BSTnode)); 
+
+ r->data=x; 
+
+ r->left=NULL; 
+
+ r->right=NULL; 
+
+ return(r); 
+
+ } 
+
+ if(x>T->data) 
+
+ { 
+
+ T->right=insert(T->right,x); 
+
+ return(T); 
+
+ } 
+
+ else 
+
+ if(x<T->data) 
+
+ { 
+
+ T->left=insert(T->left,x); 
+
+ return(T); 
+
+ } 
+
+ else //duplicate data 
+
+ return(T); 
+
+ } 
+
+BSTnode *create() 
+
+{ 
+
+ int n,x,i; 
+
+ BSTnode *root; 
+
+ root=NULL; 
+
+ printf("\nEnter no. of nodes :"); 
+
+ scanf("%d",&n); 
+
+ printf("\nEnter tree values :"); 
+
+ for(i=0;i<n;i++) 
+
+ { 
+
+ scanf("%d",&x); 
+
+ root=insert(root,x); 
+
+ } 
+
+ return(root); 
+
+} 
+
+int tleafcount(BSTnode *T) 
+
+ {
+if(T==NULL) 
+ return(0); 
+ if(T->left==NULL && T->right==NULL) 
+ return(1); 
+ return(tleafcount(T->left)+tleafcount(T->right)); 
+ } 
+int ttotalcount(BSTnode *T) 
+{ 
+static int count=0; 
+if(T!=NULL) 
+{ 
+count++; 
+ttotalcount(T->left); 
+ttotalcount(T->right); 
+} 
+return count; 
+}
